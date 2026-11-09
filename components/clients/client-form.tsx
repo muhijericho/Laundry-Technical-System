@@ -13,13 +13,14 @@ export function ClientForm({ client }: ClientFormProps) {
   async function handleSubmit(formData: FormData) {
     const data = {
       name: formData.get('name') as string,
-      email: formData.get('email') as string,
-      phone: formData.get('phone') as string,
+      city: formData.get('city') as string,
       address: formData.get('address') as string,
-      notes: formData.get('notes') as string,
+      contactPerson: formData.get('contactPerson') as string,
+      contactNumber: formData.get('contactNumber') as string,
     }
 
-    const url = client ? `/api/clients/${client.id}` : '/clients'
+    // Note: Changed '/clients' to '/api/clients' for the POST request to match standard API routes
+    const url = client ? `/api/clients/${client.id}` : '/api/clients' 
     const method = client ? 'PUT' : 'POST'
 
     await fetch(url, {
@@ -36,7 +37,7 @@ export function ClientForm({ client }: ClientFormProps) {
     <form action={handleSubmit} className="space-y-6">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Name *
+          Shop Name *
         </label>
         <input
           type="text"
@@ -49,24 +50,12 @@ export function ClientForm({ client }: ClientFormProps) {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Email
+          City
         </label>
         <input
-          type="email"
-          name="email"
-          defaultValue={client?.email || ''}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Phone
-        </label>
-        <input
-          type="tel"
-          name="phone"
-          defaultValue={client?.phone || ''}
+          type="text"
+          name="city"
+          defaultValue={client?.city || ''}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
       </div>
@@ -85,12 +74,24 @@ export function ClientForm({ client }: ClientFormProps) {
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Notes
+          Contact Person
         </label>
-        <textarea
-          name="notes"
-          rows={4}
-          defaultValue={client?.notes || ''}
+        <input
+          type="text"
+          name="contactPerson"
+          defaultValue={client?.contactPerson || ''}
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Contact Number
+        </label>
+        <input
+          type="tel"
+          name="contactNumber"
+          defaultValue={client?.contactNumber || ''}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
       </div>
