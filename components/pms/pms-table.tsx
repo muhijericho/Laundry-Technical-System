@@ -1,32 +1,65 @@
-import Link from 'next/link'
-import { PMSRecord } from '@prisma/client'
-import { formatDate, getStatusColor } from '@/lib/utils'
-import { Eye } from 'lucide-react'
+'use client'
 
-export function PMSTable({ records }: { records: PMSRecord[] }) {
+import { fmtDate } from '@/lib/reports'
+
+// Adjust this type based on what your table actually expects, 
+// or keep it flexible with 'any' if the shape varies.
+interface PMSRecord {
+  id: number | string
+  scheduledDate: Date | string
+  shopName: string
+  address: string | null
+  concern: string | null
+  technicians: string | null
+  contactName: string | null
+  status: string
+  notes: string
+  clientId: string | null
+}
+
+interface PMSTableProps {
+  records: PMSRecord[]
+}
+
+export function PMSTable({ records }: PMSTableProps) {
+  if (records.length === 0) {
+    return (
+      <div className="rounded-xl border bg-white p-8 text-center text-gray-500">
+        No preventive maintenance records found.
+      </div>
+    )
+  }
+
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+    <div className="overflow-x-auto rounded-xl border bg-white">
+      <table className="w-full min-w-[800px] text-sm">
+        <thead className="bg-gray-50 text-left text-xs uppercase text-gray-500">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Machine</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Scheduled Date</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Technician</th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+            <th className="px-3 py-2">Date</th>
+            {/* CHANGED: "Laundry Shop" to "Shop Name" */}
+            <th className="px-3 py-2">Shop Name</th>
+            <th className="px-3 py-2">Address</th>
+            <th className="px-3 py-2">Technician</th>
+            <th className="px-3 py-2">Status</th>
+            <th className="px-3 py-2">Notes</th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {records.map((record) => (
-            <tr key={record.id} className="hover:bg-gray-50">
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{record.machineType}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{formatDate(record.scheduledDate)}</td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(record.status)}`}>{record.status}</span>
+        <tbody className="divide-y">
+          {records.map((r) => (
+            <tr key={r.id} className="align-top hover:bg-gray-50">
+              <td className="whitespace-nowrap px-3 py-2 font-medium">
+                {fmtDate(r.scheduledDate)}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{record.technician || '-'}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <Link href={`/pms/${record.id}`} className="text-blue-600 hover:text-blue-900"><Eye className="h-4 w-4 inline" /></Link>
+              <td className="px-3 py-2 font-medium">{r.shopName}</td>
+              <td className="px-3 py-2 text-gray-600">{r.address || '—'}</td>
+              <td className="px-3 py-2">{r.technicians || '—'}</td>
+              <td className="px-3 py-2">
+                <span className="inline-flex rounded-full bg-green-100 px-2 py-1 text-xs font-semibold text-green-700">
+                  {r.status}
+                </span>
+              </td>
+              <td className="px-3 py-2 max-w-xs truncate" title={r.notes}>
+                {r.notes || '—'}
               </td>
             </tr>
           ))}

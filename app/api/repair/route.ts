@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import type { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 
 export const dynamic = 'force-dynamic'
@@ -7,7 +8,7 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const q = searchParams.get('q')?.trim()
 
-  const where: any = { type: 'REPAIR' }
+  const where: Prisma.ServiceReportWhereInput = { type: 'REPAIR' }
   if (q) {
     where.OR = [
       { shopName: { contains: q } },
@@ -19,7 +20,7 @@ export async function GET(req: Request) {
 
   const reports = await prisma.serviceReport.findMany({
     where,
-    include: { steps: { orderBy: { order: 'asc' } } },
+    include: { steps: { orderBy: { order: 'asc' as const } } }, // Added 'as const'
     orderBy: [{ date: 'desc' }, { id: 'desc' }],
   })
 

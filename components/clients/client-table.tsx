@@ -1,9 +1,15 @@
-import { Client } from '@prisma/client'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 
+type ClientTableRow = {
+  id: string
+  name: string
+  address: string | null
+  pmsStatus: string | null
+}
+
 interface ClientTableProps {
-  clients: Client[]
+  clients: ClientTableRow[]
 }
 
 export function ClientTable({ clients }: ClientTableProps) {
@@ -13,16 +19,10 @@ export function ClientTable({ clients }: ClientTableProps) {
         <thead className="bg-gray-50">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Shop / Owner Name
+              Laundry Name
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              City
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Contact Person
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Installer
+              Address
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               PMS Status
@@ -36,13 +36,7 @@ export function ClientTable({ clients }: ClientTableProps) {
                 <div className="text-sm font-medium text-gray-900">{client.name}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-600">{client.city || '-'}</div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-600">{client.contactPerson || '-'}</div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-600">{client.installer || '-'}</div>
+                <div className="text-sm text-gray-600">{client.address || '-'}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <span className={cn(

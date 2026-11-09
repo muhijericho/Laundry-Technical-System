@@ -13,22 +13,30 @@ export default async function RepairPage() {
 
   // 2. Map the data to match what RepairTable expects
   const repairs = serviceReports.map((r) => ({
-    id: r.id,
+    id: String(r.id),
+    clientId: String(r.clientId),
+    createdAt: r.date,
+    updatedAt: r.date,
     date: r.date,
     shopName: r.shopName,
     address: r.address,
     concern: r.concern,
     issueDescription: r.concern ?? r.steps[0]?.text ?? '',
+    technician: r.technicians,
+    cost: null,
     technicians: r.technicians,
     contactName: r.contactName,
     status: 'completed',
+    machineModel: null,
+    serialNumber: null,
+    priority: 'medium',
     notes: r.steps.map((s) => s.text).join('\n'),
     steps: r.steps,
-    clientId: r.clientId,
     machineType: 'Not specified',
     scheduledDate: r.date,
     completedDate: r.date,
-    createdAt: r.date, // Fallback in case RepairTable sorts by this
+    estimatedCost: null,
+    actualCost: null,
   }))
 
   return (

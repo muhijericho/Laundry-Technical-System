@@ -18,7 +18,7 @@ export async function GET(req: Request) {
 
   const reports = await prisma.serviceReport.findMany({
     where,
-    include: { steps: { orderBy: { order: 'asc' } } },
+    include: { steps: { orderBy: { order: 'asc' as const } } }, // Added 'as const'
     orderBy: [{ date: 'desc' }, { id: 'desc' }],
   })
 
@@ -31,7 +31,7 @@ export async function GET(req: Request) {
     contactName: r.contactName,
     status: 'completed' as const,
     machineType: 'Not specified',
-    notes: r.steps.map((s) => s.text).join('\n'),
+    notes: r.steps.map((s: any) => s.text).join('\n'), // Explicitly typed 's' to fix implicit any error
     steps: r.steps,
     clientId: r.clientId,
   }))
