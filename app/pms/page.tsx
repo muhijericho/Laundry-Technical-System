@@ -30,14 +30,14 @@ export default async function PMSPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Preventive Maintenance</h1>
           <p className="text-gray-600 mt-1">Schedule and track maintenance</p>
         </div>
         <Link
           href="/pms/new"
-          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          className="inline-flex w-full items-center justify-center rounded-xl bg-blue-600 px-4 py-3 font-medium text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 sm:w-auto sm:py-2"
         >
           <Plus className="h-5 w-5 mr-2" />
           Schedule PMS

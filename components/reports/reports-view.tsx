@@ -14,6 +14,9 @@ const badge: Record<string, string> = {
   OFFICE: 'bg-gray-100 text-gray-700',
 }
 
+const capitalizeFirst = (value: string | null | undefined) =>
+  value ? value.charAt(0).toUpperCase() + value.slice(1) : ''
+
 export function ReportsView() {
   const [reports, setReports] = useState<ReportDTO[]>([])
   const [loading, setLoading] = useState(true)
@@ -176,7 +179,7 @@ export function ReportsView() {
                   <tr key={r.id} className={`align-top ${newDay ? 'border-t-2 border-gray-200' : 'border-t'}`}>
                     <td className="whitespace-nowrap px-3 py-2 font-medium">{newDay ? fmtDate(r.date) : ''}</td>
                     <td className="px-3 py-2">
-                      <div className="font-medium">{r.shopName}</div>
+                      <div className="font-medium">{capitalizeFirst(r.shopName)}</div>
                       <div className="mt-1 flex items-center gap-1.5">
                         <span className={`inline-block rounded px-1.5 py-0.5 text-[10px] font-medium ${badge[r.type] ?? badge.OFFICE}`}>
                           {REPORT_TYPES.find((t) => t.value === r.type)?.label ?? r.type}
@@ -184,11 +187,11 @@ export function ReportsView() {
                         {r.clientId && <span className="text-[10px] text-green-600">✓ linked</span>}
                       </div>
                     </td>
-                    <td className="px-3 py-2">{r.address}</td>
-                    <td className="px-3 py-2">{r.concern}</td>
+                    <td className="px-3 py-2">{capitalizeFirst(r.address)}</td>
+                    <td className="px-3 py-2">{capitalizeFirst(r.concern)}</td>
                     <td className="px-3 py-2">
                       <ol className="list-decimal space-y-0.5 pl-4">
-                        {r.steps.map((s) => <li key={s.id}>{s.text}</li>)}
+                        {r.steps.map((s) => <li key={s.id}>{capitalizeFirst(s.text)}</li>)}
                       </ol>
                     </td>
                     <td className="px-3 py-2">{r.technicians}</td>

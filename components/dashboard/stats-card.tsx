@@ -11,7 +11,7 @@ interface StatsCardProps {
 
 export function StatsCard({ title, value, icon: Icon, trend, trendUp }: StatsCardProps) {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
+    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md sm:p-5 lg:p-6">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-medium text-gray-600">{title}</p>
@@ -25,8 +25,8 @@ export function StatsCard({ title, value, icon: Icon, trend, trendUp }: StatsCar
             </p>
           )}
         </div>
-        <div className="p-3 bg-blue-50 rounded-lg">
-          <Icon className="h-6 w-6 text-blue-600" />
+        <div className="rounded-xl bg-blue-50 p-2.5 sm:p-3">
+          <Icon className="h-5 w-5 text-blue-600 sm:h-6 sm:w-6" />
         </div>
       </div>
     </div>

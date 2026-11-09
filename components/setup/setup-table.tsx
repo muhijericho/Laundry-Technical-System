@@ -23,8 +23,8 @@ export function SetupTable({ setups }: { setups: SetupRecord[] }) {
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-      <table className="min-w-full divide-y divide-gray-200">
+    <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <table className="min-w-[760px] divide-y divide-slate-200">
         <thead className="bg-gray-50">
           <tr>
             {/* CHANGED: "Machine" to "Shop Name" */}

@@ -31,7 +31,7 @@ export function PMSTable({ records }: PMSTableProps) {
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border bg-white">
+    <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
       <table className="w-full min-w-[800px] text-sm">
         <thead className="bg-gray-50 text-left text-xs uppercase text-gray-500">
           <tr>
