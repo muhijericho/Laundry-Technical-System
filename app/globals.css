@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --border: #e5e7eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --primary: #3b82f6;
+    --primary-foreground: #ffffff;
+    --muted: #1f2937;
+    --muted-foreground: #9ca3af;
+    --border: #374151;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Custom utility classes to replace @apply issues */
+.border-border {
+  border-color: var(--border);
+}
+.bg-muted {
+  background-color: var(--muted);
+}
+.text-muted-foreground {
+  color: var(--muted-foreground);
+}

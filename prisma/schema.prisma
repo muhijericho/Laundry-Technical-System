@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id            String    @id @default(cuid())
+  name          String    // Shop Name / Laundry Owner's Name
+  city          String?   // City
+  address       String?   // Complete Address
+  contactPerson String?   // Contact Person
+  contactNumber String?   // Contact Numbers
+  installer     String?   // Installation Team Assigned
+  pmsStatus     String?   // PMS STATUS (e.g., "done", "pending")
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  repairs        Repair[]
+  setups         Setup[]
+  pmsRecords     PMSRecord[]
+  serviceReports ServiceReport[]
+}
+
+model Repair {
+  id            String    @id @default(cuid())
+  clientId      String
+  client        Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  
+  machineType   String
+  machineModel  String?
+  serialNumber  String?
+  issueDescription String
+  status        String    @default("pending") // pending, in_progress, completed, cancelled
+  priority      String    @default("normal") // low, normal, high, urgent
+  
+  scheduledDate DateTime?
+  completedDate DateTime?
+  
+  technician    String?
+  cost          Float?
+  notes         String?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Setup {
+  id            String    @id @default(cuid())
+  clientId      String
+  client        Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  
+  machineType   String
+  machineModel  String?
+  location      String?
+  
+  status        String    @default("scheduled") // scheduled, in_progress, completed, cancelled
+  scheduledDate DateTime
+  completedDate DateTime?
+  
+  technician    String?
+  cost          Float?
+  notes         String?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model PMSRecord {
+  id            String    @id @default(cuid())
+  clientId      String
+  client        Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  
+  machineType   String
+  machineModel  String?
+  
+  scheduledDate DateTime
+  completedDate DateTime?
+  
+  status        String    @default("scheduled") // scheduled, completed, missed
+  technician    String?
+  
+  checklist     String? // JSON string with checklist items
+  notes         String?
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model ServiceReport {
+  id          Int          @id @default(autoincrement())
+  date        DateTime
+  shopName    String
+  address     String?
+  concern     String?
+  type        String       @default("REPAIR")
+  technicians String?
+  contactName String?
+  clientId    String?
+  client      Client?      @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  linkedId    String?      // id of the Repair / PMS / Setup created from this report
+  steps       ReportStep[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([date])
+}
+
+model ReportStep {
+  id       Int           @id @default(autoincrement())
+  reportId Int
+  order    Int
+  text     String
+  report   ServiceReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@index([reportId])
+}
