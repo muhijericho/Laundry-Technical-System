@@ -4,9 +4,25 @@ import Link from 'next/link'
 import { Plus } from 'lucide-react'
 
 export default async function PMSPage() {
-  const records = await prisma.pMSRecord.findMany({ 
-    orderBy: { scheduledDate: 'desc' } 
+  // 1. Fetch from ServiceReport instead of PMSRecord
+  const serviceReports = await prisma.serviceReport.findMany({
+    where: { type: 'PMS' },
+    orderBy: { scheduledDate: 'desc' },
   })
+
+  // 2. Map the data to match what PMSTable expects
+  const records = serviceReports.map((r) => ({
+    id: r.id,
+    scheduledDate: r.scheduledDate,
+    shopName: r.shopName,
+    address: r.address,
+    concern: r.concern,
+    technicians: r.technicians,
+    contactName: r.contactName,
+    status: r.status,
+    notes: r.notes,
+    clientId: r.clientId,
+  }))
 
   return (
     <div className="space-y-6">
